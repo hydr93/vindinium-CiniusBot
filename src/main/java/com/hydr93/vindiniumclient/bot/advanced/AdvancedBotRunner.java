@@ -16,6 +16,8 @@ import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class AdvancedBotRunner implements Callable<GameState> {
@@ -30,12 +32,15 @@ public class AdvancedBotRunner implements Callable<GameState> {
             });
     private static final Logger logger = LogManager.getLogger(AdvancedBotRunner.class);
 
+
     private final ApiKey apiKey;
+    private final Map<String, String> contentMap;
     private final GenericUrl gameUrl;
     private final AdvancedBot bot;
 
-    public AdvancedBotRunner(ApiKey apiKey, GenericUrl gameUrl, AdvancedBot bot) {
-        this.apiKey = apiKey;
+    public AdvancedBotRunner(Map<String, String> cMap, GenericUrl gameUrl, AdvancedBot bot) {
+        this.apiKey = new ApiKey(cMap.get("key"));
+        this.contentMap = cMap;
         this.gameUrl = gameUrl;
         this.bot = bot;
     }
@@ -51,9 +56,10 @@ public class AdvancedBotRunner implements Callable<GameState> {
         try {
             // Initial request
             logger.info("Sending initial request...");
-            content = new UrlEncodedContent(apiKey);
+            content = new UrlEncodedContent(contentMap);
             request = REQUEST_FACTORY.buildPostRequest(gameUrl, content);
             request.setReadTimeout(0); // Wait forever to be assigned to a game
+
             response = request.execute();
             gameState = response.parseAs(GameState.class);
             logger.info("Game URL: {}", gameState.getViewUrl());
@@ -86,7 +92,7 @@ public class AdvancedBotRunner implements Callable<GameState> {
         } catch (Exception e) {
             logger.error("Error during game play", e);
         }
-
+        logger.info("Gold: "+gameState.getHero().getGold());
         logger.info("Game over");
         return gameState;
     }

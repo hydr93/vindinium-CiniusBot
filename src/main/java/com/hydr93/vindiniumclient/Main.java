@@ -11,6 +11,9 @@ import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * CLI program for launching a bot
  */
@@ -25,28 +28,36 @@ public class Main {
 
         final String key = args[0];
         final String arena = args[1];
-        final String botClass = args[2];
+        String mapType = "";
+        if (args.length > 2){
+            mapType = args[2];
+        }
+        final String botClass = "com.hydr93.vindiniumclient.ciniusbot.CiniusBot";
 
         final GenericUrl gameUrl;
 
         if ("TRAINING".equals(arena))
             gameUrl = VindiniumUrl.getTrainingUrl();
-        else if ("COMPETITION".equals(arena))
+        else if ("ARENA".equals(arena))
             gameUrl = VindiniumUrl.getCompetitionUrl();
         else
             gameUrl = new VindiniumUrl(arena);
 
-        for ( int i = 0; i < 5; i++){
-            runAdvancedBot(key, gameUrl, botClass);
+        Map<String, String> contentMap = new HashMap<String, String>();
+        contentMap.put("key", key );
+        if (gameUrl.toString().endsWith("training") && args.length > 2){
+            contentMap.put("map",mapType );
         }
+
+        runAdvancedBot(contentMap, gameUrl, botClass);
+
     }
 
-    private static void runAdvancedBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
+    private static void runAdvancedBot(Map<String, String> contentMap, GenericUrl gameUrl, String botClass) throws Exception {
         Class<?> clazz = Class.forName(botClass);
         Class<? extends AdvancedBot> botClazz = clazz.asSubclass(AdvancedBot.class);
         AdvancedBot bot = botClazz.newInstance();
-        ApiKey apiKey = new ApiKey(key);
-        AdvancedBotRunner runner = new AdvancedBotRunner(apiKey, gameUrl, bot);
+        AdvancedBotRunner runner = new AdvancedBotRunner(contentMap, gameUrl, bot);
         runner.call();
     }
 
@@ -55,14 +66,14 @@ public class Main {
      */
     public static class VindiniumUrl extends GenericUrl {
         private final static String TRAINING_URL = "http://vindinium.org/api/training";
-        private final static String COMPETITION_URL = "http://vindinium.org/api/arena";
+        private final static String ARENA_URL = "http://vindinium.org/api/arena";
 
         public VindiniumUrl(String encodedUrl) {
             super(encodedUrl);
         }
 
         public static VindiniumUrl getCompetitionUrl() {
-            return new VindiniumUrl(COMPETITION_URL);
+            return new VindiniumUrl(ARENA_URL);
         }
 
         public static VindiniumUrl getTrainingUrl() {

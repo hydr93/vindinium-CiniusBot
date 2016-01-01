@@ -13,15 +13,14 @@ import java.util.*;
 
 public class CiniusBot implements AdvancedBot {
 
-
-
+    private AdvancedGameState game;
 
     @Override
     public BotMove move(AdvancedGameState gameState) {
-
-        GameState.Position target = CiniusUtility.findTarget(gameState);
-        BotMove action = CiniusUtility.findPath(gameState, target);
-
+        game = gameState;
+        GameState.Position target = CiniusTargeter.findTarget(gameState);
+        CiniusMover.findPath(gameState, target);
+        BotMove action = CiniusMover.getAction();
         return action;
     }
 

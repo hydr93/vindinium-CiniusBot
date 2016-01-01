@@ -13,6 +13,8 @@ public class AdvancedGameState {
     private final Map<Integer, GameState.Hero> heroesById;
     private final Map<GameState.Position, Vertex> boardGraph;
     private final GameState.Hero me;
+    private int totalTurns;
+    private int currentTurn;
 
     /**
      * Creates an AdvancedGameState from a GameState
@@ -24,6 +26,9 @@ public class AdvancedGameState {
         pubs = new HashMap<>();
         heroesById = new HashMap<>();
         heroesByPosition = new HashMap<>();
+
+        totalTurns = gameState.getGame().getMaxTurns();
+        currentTurn = gameState.getGame().getTurn();
 
         // Hero stuffs
         for(GameState.Hero currentHero : gameState.getGame().getHeroes()) {
@@ -113,6 +118,9 @@ public class AdvancedGameState {
      */
     public AdvancedGameState(AdvancedGameState oldGameState, GameState updatedState) {
 
+        totalTurns = updatedState.getGame().getMaxTurns();
+        currentTurn = updatedState.getGame().getTurn();
+
         // Copy the stuff we can just re-use
         this.boardGraph = oldGameState.getBoardGraph();
         this.pubs = oldGameState.getPubs();
@@ -181,4 +189,8 @@ public class AdvancedGameState {
     public GameState.Hero getMe() {
         return me;
     }
+
+    public int getTotalTurns() {return totalTurns;}
+
+    public int getCurrentTurn() {return currentTurn;}
 }
