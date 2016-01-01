@@ -1,7 +1,6 @@
 package com.hydr93.vindiniumclient.bot;
 
-import com.hydr93.vindiniumclient.bot.advanced.AdvancedBot;
-import com.hydr93.vindiniumclient.bot.advanced.AdvancedGameState;
+import com.hydr93.vindiniumclient.bot.advanced.*;
 import com.hydr93.vindiniumclient.dto.GameState;
 
 import java.util.LinkedList;

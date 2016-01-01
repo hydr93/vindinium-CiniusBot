@@ -11,18 +11,11 @@ import java.util.*;
  * Created by hydr93 on 25/12/15.
  */
 
-public class CiniusBot implements AdvancedBot {
-
-
-
+public class Bot implements AdvancedBot {
 
     @Override
     public BotMove move(AdvancedGameState gameState) {
-
-        GameState.Position target = CiniusUtility.findTarget(gameState);
-        BotMove action = CiniusUtility.findPath(gameState, target);
-
-        return action;
+        return BotMove.STAY;
     }
 
     @Override

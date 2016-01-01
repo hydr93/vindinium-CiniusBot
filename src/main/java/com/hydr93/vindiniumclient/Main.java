@@ -36,7 +36,9 @@ public class Main {
         else
             gameUrl = new VindiniumUrl(arena);
 
-        runAdvancedBot(key, gameUrl, botClass);
+        for ( int i = 0; i < 5; i++){
+            runAdvancedBot(key, gameUrl, botClass);
+        }
     }
 
     private static void runAdvancedBot(String key, GenericUrl gameUrl, String botClass) throws Exception {
