@@ -1,5 +1,7 @@
-# vindinium-ciniusBot
+# Mention
 
-Firstly I want to mention that this bot is created over the Java client, which is created by [Brian Stempin](https://github.com/bstempi)
+I want to mention that this bot is created over the Java client, which is created by [Brian Stempin](https://github.com/bstempi)
 
-Secondly I want to say that this bot is under development right now. It is same with the Java client right now.
+# Vindinium-CiniusBot
+
+This bot uses Greedy Best-First Search Algorithm and A* Algorithms to play the game. It locates the poisiton it wants to go with Greedy BFS Algorithm, and find the optimal path with A*.
